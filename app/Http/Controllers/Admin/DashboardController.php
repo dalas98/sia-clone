@@ -17,8 +17,9 @@ class DashboardController extends Controller
 
     public function getChart()
     {
+        $data = [];
         $subject = EnrollSubject::select('subject_id', DB::raw('count(*) as total'))->with('subject')->groupBy('subject_id')->get();
-        foreach ($subject as $key => $value) {
+        foreach ($subject as $value) {
             $data['color'][] = "rgb(".rand(0,255).",".rand(0,255).",".rand(0,255).")";
             $data['xValues'][] = $value->subject->name;
             $data['yValues'][] = $value->total;
