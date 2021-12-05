@@ -29,16 +29,16 @@
                     @foreach ($subjects as $key => $item)
                         <tr>
                             <td>{{ $key+1 }}</td>
-                            <td>{{ $item->subject_code }}</td>
-                            <td>{{ $item->name }}</td>
-                            <td>{{ $item->lecture_code }}</td>
-                            <td>{{ date('H:i',strtotime($item->time)). __(" - ") .date("H:i", strtotime('+90 minutes', strtotime($item->time))) }}</td>
-                            <td>{{ $item->classroom }}</td>
-                            <td>{{ __("0/").$item->student_total }}</td>
-                            <td>{{ date("d F Y",strtotime($item->start_date)) }}</td>
+                            <td>{{ $item->subject->subject_code }}</td>
+                            <td>{{ $item->subject->name }}</td>
+                            <td>{{ $item->subject->lecture_code }}</td>
+                            <td>{{ date('H:i',strtotime($item->subject->time)). __(" - ") .date("H:i", strtotime('+90 minutes', strtotime($item->subject->time))) }}</td>
+                            <td>{{ $item->subject->classroom }}</td>
+                            <td>{{ $item->total."/".$item->subject->student_total }}</td>
+                            <td>{{ date("d F Y",strtotime($item->subject->start_date)) }}</td>
                             <td>
-                                <form action="{{ route('subject.destroy',$item->id) }}" method="POST">
-                                    <a class="btn btn-primary" href="{{ route('subject.edit',$item->id) }}">Edit</a>
+                                <form action="{{ route('subject.destroy',$item->subject->id) }}" method="POST">
+                                    <a class="btn btn-primary" href="{{ route('subject.edit',$item->subject->id) }}">Edit</a>
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger">Delete</button>

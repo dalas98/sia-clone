@@ -21,7 +21,6 @@
                     <th id="time">Jam</th>
                     <th id="classroom">Ruang Kelas</th>
                     <th id="start_date">Tanggal Mulai</th>
-                    <th id="max_student">Jumlah Mahasiswa</th>
                     <th id="action">Hapus</th>
                 </thead>
                 <tbody>
@@ -34,7 +33,6 @@
                             <td>{{ date('H:i',strtotime($item->subject->time)). __(" - ") .date("H:i", strtotime('+90 minutes', strtotime($item->subject->time))) }}</td>
                             <td>{{ $item->subject->classroom }}</td>
                             <td>{{ date("d F Y",strtotime($item->subject->start_date)) }}</td>
-                            <td>{{ "0/".$item->subject->student_total }}</td>
                             <td>
                                 <form action="{{ route('enroll.destroy',$item->id) }}" method="POST">
                                     @csrf
@@ -68,15 +66,15 @@
                     @foreach ($subjects as $key => $item)
                         <tr>
                             <td>{{ $key+1 }}</td>
-                            <td>{{ $item->subject_code }}</td>
-                            <td>{{ $item->name }}</td>
-                            <td>{{ $item->lecture_code }}</td>
-                            <td>{{ date('H:i',strtotime($item->time)). __(" - ") .date("H:i", strtotime('+90 minutes', strtotime($item->time))) }}</td>
-                            <td>{{ $item->classroom }}</td>
-                            <td>{{ date("d F Y",strtotime($item->start_date)) }}</td>
-                            <td>{{ "0/".$item->student_total }}</td>
+                            <td>{{ $item->subject->subject_code }}</td>
+                            <td>{{ $item->subject->name }}</td>
+                            <td>{{ $item->subject->lecture_code }}</td>
+                            <td>{{ date('H:i',strtotime($item->subject->time)). __(" - ") .date("H:i", strtotime('+90 minutes', strtotime($item->subject->time))) }}</td>
+                            <td>{{ $item->subject->classroom }}</td>
+                            <td>{{ date("d F Y",strtotime($item->subject->start_date)) }}</td>
+                            <td>{{ $item->total."/".$item->subject->student_total }}</td>
                             <td>
-                                <form action="{{ route('enroll.store',$item->id) }}" method="POST">
+                                <form action="{{ route('enroll.store',$item->subject->id) }}" method="POST">
                                     @csrf
                                     <button type="submit" class="btn btn-success">+</button>
                                 </form>

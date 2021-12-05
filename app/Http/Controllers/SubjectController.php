@@ -7,6 +7,7 @@ use App\Http\Requests\StoreSubject;
 use App\Subject;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SubjectController extends Controller
 {
@@ -14,7 +15,7 @@ class SubjectController extends Controller
     
     public function index()
     {
-        $data['subjects'] = Subject::all();
+        $data['subjects'] = EnrollSubject::select('subject_id', DB::raw('count(*) as total'))->with('subject')->groupBy('subject_id')->get();
         return view('admin.subjectList', $data);
     }
 
@@ -79,7 +80,7 @@ class SubjectController extends Controller
 
     public function enrollStudentSubject()
     {
-        $data['subjects'] = Subject::all();
+        $data['subjects'] = EnrollSubject::select('subject_id', DB::raw('count(*) as total'))->with('subject')->groupBy('subject_id')->get();
         $data['enrolls'] = EnrollSubject::where('student_id',request()->user()->id)->with('subject')->get();
         return view('student.enrollSubject',$data);
     }
