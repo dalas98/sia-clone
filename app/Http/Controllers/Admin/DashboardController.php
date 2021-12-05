@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\EnrollSubject;
 use App\Http\Controllers\Controller;
 use App\Subject;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -15,13 +17,13 @@ class DashboardController extends Controller
 
     public function getChart()
     {
-        $data['xValues'] = Subject::get()->pluck('name');
-        $data['color'] = [];
-        foreach ($data['xValues'] as $key => $value) {
+        $subject = EnrollSubject::select('subject_id', DB::raw('count(*) as total'))->with('subject')->groupBy('subject_id')->get();
+        foreach ($subject as $key => $value) {
             $data['color'][] = "rgb(".rand(0,255).",".rand(0,255).",".rand(0,255).")";
-            $data['yValues'][] = rand(0,255);
+            $data['xValues'][] = $value->subject->name;
+            $data['yValues'][] = $value->total;
         }
-
+        
         return $data;
     }
 }
